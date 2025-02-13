@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    
+    
+    {% block content %}
+        <div class="main-content">
+            <h3 style="font-size: 20px;">Deposits</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Members</th>
+                        <th>Deposits (Shs)</th>
+                        <th> Current month (Shs)</th>
+                        <th>Amount Due</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in member_data %}
+                    <tr>
+                        <td> {{member.username}}</td>
+                        <td>{{member.total_deposits|intcomma}}</td>
+                        <td>{{member.this_month_deposits|intcomma}}</td>
+                        <td>{{member.amount_due|intcomma}}</td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+     {% endblock %}
+</body>
+</html>

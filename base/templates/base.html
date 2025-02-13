@@ -1,0 +1,75 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future billionares</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="{% static 'js/react.development.js %'}"></script>
+    <script src="{% static 'js/react.dom.development.js %'}"></script>
+    <script src="{% static 'js/babel.min.js %'}"></script>
+</head>
+<body>
+     <!--Sidebar -->
+     <i class="fas fa-bars"id="open-button"></i>
+     <div class="sidebar"id="sidebar">
+        <h2 style="font-size: 15px; text-align: center" >FUTURE</h2>
+        <ul>
+            <li><a href="{% url 'home' %}"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+            <li><a href="{% url 'member' %}"> <i class="fa-solid fa-users"></i>Members</a></li>
+            <li><a href="{% url 'deposit' %}"> <i class="fa-solid fa-money-bill-transfer"></i>Deposits</a></li>
+            <li><a href="{% url 'history' %}"> <i class="fa-solid fa-receipt"></i>Deposit history</a></li>
+            
+        </ul>
+        <div id="react-root">
+        
+        </div>
+        <a href="{% url 'login' %}" style="margin-left: 20px;margin-top: 10px; color: antiquewhite;margin-top: 100%;">Log out <i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+    </div>
+    
+    {% block content %}
+        
+    {% endblock %}
+    <script src="{% static 'base.js' %}" ></script>
+    <script type="text/babel">
+   
+function DigitalClock(){
+    const[time,setTime] = React.useState(new Date())
+    React.useEffect(()=>{
+        const intervalId= setInterval(()=>{
+            setTime(new Date())
+        },1000
+
+        )
+        return ()=>{
+            clearInterval(intervalId)
+        }
+    },[]
+    )
+    const formatTime =()=>{
+        let hours =time.getHours()
+        let minutes =time.getMinutes()
+        let seconds = time.getSeconds()
+        let meridian = hours >= 12? 'PM':'AM'
+        hours = hours % 12 || 12
+        return `${addZero(hours)}:${addZero(minutes)}:${addZero(seconds)} ${meridian}`
+    }
+    const addZero=(number)=>{
+       return (number< 10? '0':'')+number
+    }
+    return(
+        <div className="digital-clock">
+            <span>{formatTime()}</span>
+        </div>
+    )
+} 
+        ReactDOM.render(<DigitalClock />,document.getElementById('react-root'))
+    </script>
+</body>
+</html>

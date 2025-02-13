@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Funds Dashboard</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    
+</head>
+<body>
+{% block content %}
+    <!--Main Content -->
+    <div class="main-content" style="align-items: center; justify-content: center;">
+        <h3 style="font-size: 2rem;">Welcome, <span style="color:rgba(8, 100, 200, 0.9);">{{user}}</span></h3>
+        <p>Track all your deposits here,total funds available, members and have a wonderfull stay</p>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <h3><i class="fa-solid fa-people-group"></i></h3>
+                <p style="color: rgba(8, 100, 200, 0.9);;">{{ members_no }}</p>
+                <p style="font-size: 14px;">Members</p>
+            </div>
+            <div class="stat-card">
+                <h3> <i class="fa-solid fa-hand-holding-dollar"></i></h3>
+                
+                <p style="color: rgba(8, 100, 200, 0.9);;" id="Obligation">{{total_deposits|intcomma}}</p>
+                
+                <p style="font-size: 14px;">your deposits</p>
+            </div>
+            <div class="stat-card">
+                <h3><i class="fa-solid fa-vault"></i></h3>
+                <p style="color: rgba(8, 100, 200, 0.9);;" id="funds">{{ total_funds|intcomma }}</p>
+                <p style="font-size: 14px;">Bank A/C</p>
+            </div>
+            
+          
+        </div>
+        
+    </div>
+    {% endblock %}   
+    
+</body>
+</html>

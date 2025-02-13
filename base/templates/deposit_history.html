@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    {% block content %}
+    <div class="main-content">
+       <h3>Monthly breakdown of deposits</h3>
+        <table border=”1” id=”members-table”>
+            <thead>
+                <tr>
+                    <th>Member</th>
+                    <th>Leadership Position</th>
+                    <th>Deposit History (Monthly Breakdown)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in member_data %}
+                <tr>
+                    <td>{{ member.username }}</td>
+                    <td>{{ member.leadership_position }}</td>
+                    <td style="padding: 0;">
+                        <div class="scrollable-table">
+                        <table style="width: 100%;">
+                            
+                            <tbody>
+                                {% for entry in member.deposit_history %}
+                                <tr>
+                                    <td>{{ entry.month }}</td>
+                                    <td>{{ entry.total_deposit|intcomma }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan=”1”>N/A</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        </div>
+                        
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+    {% endblock %}
+</body>
+</html>
