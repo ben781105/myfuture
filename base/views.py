@@ -27,30 +27,33 @@ def login_user(request):
 
 @login_required(login_url="login")
 def home_view(request):
-   user =request.user
-   member = Member.objects.get(user=user)
-   total_funds = Deposit.objects.filter(confirmed = True).aggregate(total= Sum('amount'))['total'] or 0
+   user = request.user
+
+   try:
+      member = Member.objects.get(user=user)
+   except Member.DoesNotExist:
+      member = None  # Or skip member-specific logic
+
+   total_funds = Deposit.objects.filter(confirmed=True).aggregate(total=Sum('amount'))['total'] or 0
    total_funds = int(total_funds)
-   members_no = Member.objects.all().count()
+   members_no = Member.objects.count()
    obligations = MonthlyObligation.objects.order_by('-month').first()
    obligation_amount = obligations.amount if obligations else 50000
-   
-   
-     
-   total_deposits = Deposit.objects.filter(member=member, confirmed = True).aggregate(total = Sum('amount'))['total'] or 0
-     
-   context = {
-     
-     'obligations': str(obligation_amount),
-     'total_funds': int(total_funds),
-     'user': request.user,
-     'members_no':members_no,
-     'total_deposits':total_deposits
-    
-     
-   }
-   return render(request, 'home.html',context)
 
+   total_deposits = 0
+   if member:
+      total_deposits = Deposit.objects.filter(member=member, confirmed=True).aggregate(total=Sum('amount'))['total'] or 0
+
+   context = {
+      'obligations': str(obligation_amount),
+      'total_funds': total_funds,
+      'user': user,
+      'members_no': members_no,
+      'total_deposits': total_deposits,
+      'is_member': member is not None,
+   }
+
+   return render(request, 'home.html', context)
 
 @login_required(login_url="login")
 def members_view(request):
